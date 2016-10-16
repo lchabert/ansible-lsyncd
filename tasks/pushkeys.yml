@@ -1,0 +1,5 @@
+- name: Push downloaded key to second_server
+  authorized_key: user=root key="{{ lookup('file', '/tmp/id_rsa.tmp') }}"
+
+- name: Deleting temporal files
+  local_action: command rm -f /tmp/id_rsa.tmp

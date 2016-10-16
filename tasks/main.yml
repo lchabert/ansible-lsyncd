@@ -1,0 +1,12 @@
+---
+- include: Debian.yml
+  when: ansible_os_family == "Debian" and lsyncd_master == True
+- include: Centos.yml
+  when: ansible_os_family == "RedHat" and lsyncd_master == True
+  tags: [lsyncd,install]
+- include: config.yml
+  tags: [lsyncd,config]
+  when: lsyncd_master == True
+- include: pushkeys.yml 
+  when: lsyncd_master == False
+  tags: [lsyncd,pushkeys]

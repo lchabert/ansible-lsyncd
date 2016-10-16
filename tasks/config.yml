@@ -1,0 +1,14 @@
+- stat: path=/root/.ssh/id_rsa
+  register: st
+
+- name: Create ssh-key for root
+  command: ssh-keygen -N '' -f /root/.ssh/id_rsa
+  when: st.stat.exists == False
+
+- name: Downloading pub key
+  fetch: src=/root/.ssh/id_rsa.pub dest=/tmp/id_rsa.tmp flat=yes
+
+- name: Apply config for lsyncd
+  template: src=lsyncd.j2 dest=/etc/lsyncd.conf owner=root group=root mode=0755
+  notify:
+    restart_lsyncd

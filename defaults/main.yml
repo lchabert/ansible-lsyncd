@@ -1,0 +1,6 @@
+---
+lsyncd_startup_enabled: True
+lsyncd_logging_dir: /var/log/lsyncd
+lsyncd_logging_status_file: lsyncd.status
+lsyncd_logging_file: lsync.log
+lsynd_targets: {}

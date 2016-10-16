@@ -1,0 +1,24 @@
+settings {
+        logfile = "{{lsyncd_logging_dir}}/{{lsyncd_logging_file}}",
+        statusFile = "{{lsyncd_logging_dir}}/{{lsyncd_logging_status_file}}"
+}
+
+{% for target in lsyncd_targets %}
+sync {
+        default.rsyncssh,
+        source = "{{target.source}}",
+        host = "{{target.host}}",
+        targetdir = "{{target.targetdir}}",
+        rsync = {
+          archive = true, -- use the archive flag in rsync
+          perms = true, -- Keep the permissions
+          owner = true, -- Keep the owner
+          _extra = {"-a", "--delete-after"},
+        },
+        delay = {{target.delay}}, -- We want to delay the syncing for 5 seconds so we queue up the events
+        maxProcesses = {{target.maxProcesses}}, -- We only want to use a maximum of 4 rsync processes at same time
+        ssh = {
+          port = {{target.ssh_port}} -- This section allows configuration for ssh specific stuff such as a different port
+        }
+}
+{% endfor %}
